@@ -1,0 +1,23 @@
+img.product {
+    max-height: 380px;
+}
+
+.price {
+    color: rgb(0, 80, 0);
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+img.star {
+    width: 120px;
+    height: 17px;
+}
+
+.description,
+.rating {
+    font-size: 1.1em;
+}
+
+.counter {
+    width: 20%;
+}

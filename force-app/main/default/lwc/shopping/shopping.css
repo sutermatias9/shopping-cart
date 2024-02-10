@@ -1,0 +1,7 @@
+/* .cart {
+    --slds-c-button-color-background: green;
+} */
+
+c-tile {
+    display: inline-block;
+}

@@ -1,0 +1,28 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-form-element counter">
+        <div class="slds-form-element__control">
+            <!-- Decrement Button -->
+            <button class="slds-button slds-button_icon slds-button_icon-small slds-input__button_decrement"
+                title="Decrement counter" onclick={handleDecrementClick}>
+                <svg class="slds-button__icon" aria-hidden="true">
+                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#ban"></use>
+                </svg>
+                <span class="slds-assistive-text">Decrement counter</span>
+            </button>
+
+            <!-- Numeric Input -->
+            <input type="number" id="default1" placeholder="1" class="slds-input slds-input_counter"
+                value={currentValue} oninput={handleNumberInput} />
+
+            <!-- Increment Button -->
+            <button class="slds-button slds-button_icon slds-button_icon-small slds-input__button_increment"
+                title="Increment counter" onclick={handleIncrementClick}>
+                <svg class="slds-button__icon" aria-hidden="true">
+                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#new"></use>
+                </svg>
+                <span class="slds-assistive-text">Increment counter</span>
+            </button>
+        </div>
+    </div>
+</template>

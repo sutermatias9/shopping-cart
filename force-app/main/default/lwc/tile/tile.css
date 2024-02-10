@@ -1,0 +1,29 @@
+.tile {
+    height: 300px;
+    width: 300px;
+}
+
+.tile:hover .name {
+    text-decoration: underline;
+}
+
+.tile:hover {
+    cursor: pointer;
+}
+
+.image-container {
+    height: 180px;
+}
+
+.product-image {
+    max-height: 180px;
+}
+
+.price {
+    color: rgb(0, 80, 0);
+}
+
+img.star {
+    height: 14px;
+    width: 14px;
+}

@@ -1,0 +1,28 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <!-- Cart Modal -->
+    <c-modal class="cart">
+        <!-- Modal Header -->
+        <span slot="title">Cart</span>
+
+        <!-- Modal Body -->
+        <div slot="content">
+            <!-- Table of Products added to Cart -->
+            <lightning-datatable key-field="Name" data={tableData} show-row-number-column hide-checkbox-column
+                columns={tableColumns}>
+            </lightning-datatable>
+
+            <!-- Final Price of all added Products -->
+            <div class="slds-var-m-top_medium final-price">Grand Total: <span class="price">${grandTotal}</span></div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div slot="footer">
+            <!-- Cancel Button -->
+            <lightning-button label="Cancel" variant="brand-outline" onclick={handleCancelClick}></lightning-button>
+
+            <!-- Create Order Button (Illustrative example, does not work) -->
+            <lightning-button label="Create Order" variant="brand" class="slds-var-m-left_medium"></lightning-button>
+        </div>
+    </c-modal>
+</template>

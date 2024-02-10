@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Filters">
+        <div class="slds-var-p-around_medium">
+            <!-- Maximum Price Slider -->
+            <div class="slds-var-m-bottom_medium">
+                <lightning-slider data-type="max" label="Max. Price" step="50" max={maxPrice} value={maxSliderValue}
+                    onchange={handleSliderChange}></lightning-slider>
+            </div>
+
+            <!-- Minimum Price Slider -->
+            <div class="slds-var-m-bottom_medium">
+                <lightning-slider data-type="min" class=" slds-var-m-bottom_medium" label="Min. Price" step='50'
+                    max={maxPrice} value={minSliderValue} onchange={handleSliderChange}></lightning-slider>
+            </div>
+
+            <!-- Category Combobox -->
+            <lightning-combobox name="category" label="Category" value={selectedCategory} placeholder="Select Category"
+                options={comboboxOptions} onchange={handleComboboxChange}></lightning-combobox>
+        </div>
+
+        <!-- Card Footer -->
+        <div slot="footer">
+            <!-- Reset Filters Button -->
+            <lightning-button label="Reset" variant="brand-outline" onclick={handleReset}></lightning-button>
+
+            <!-- Apply Filters Button -->
+            <lightning-button label="Apply" variant="brand" class="slds-var-m-left_medium"
+                onclick={handleApplyClick}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
