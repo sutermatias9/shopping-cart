@@ -1,5 +1,5 @@
 public with sharing class ProductHandler {
-    private static final String URL = 'https://fakestoreapi.com/';
+    private static final String API_URL = 'https://fakestoreapi.com/';
 
     @AuraEnabled(cacheable=true)
     public static List<Product2> getProducts() {
@@ -17,11 +17,11 @@ public with sharing class ProductHandler {
         ];
     }
 
-    private static void insertProductsFromApi() {
+    private static void synchronizeProductsFromApi() {
         HttpResponse response = sendHttpRequest();
-        List<ProductWrapper> itemList = ProductWrapper.parse(response.getBody());
+        List<ProductWrapper> apiProducts = ProductWrapper.parse(response.getBody());
 
-        createProducts(itemList);
+        createProducts(apiProducts);
     }
 
     private static HttpResponse sendHttpRequest() {
@@ -29,26 +29,25 @@ public with sharing class ProductHandler {
         HttpRequest request = new HttpRequest();
 
         request.setMethod('GET');
-        request.setEndpoint(URL + 'products');
+        request.setEndpoint(API_URL + 'products');
         return http.send(request);
     }
 
-    private static List<Product2> createProducts(List<ProductWrapper> items) {
+    private static List<Product2> createProducts(List<ProductWrapper> apiProducts) {
         List<String> existingProductsNames = getExistingProductsNames();
         List<Product2> newProducts = new List<Product2>();
 
-        for (ProductWrapper item : items) {
-            if (!doesProductExist(item.title, existingProductsNames)) {
-                newProducts.add(createProduct(item));
+        for (ProductWrapper apiProduct : apiProducts) {
+            String productName = apiProduct.title.trim();
+            if (!existingProductsNames.contains(productName)) {
+                newProducts.add(createProduct(apiProduct));
             }
         }
 
         if (!newProducts.isEmpty()) {
             insert newProducts;
-            setProductsPrices(newProducts, items);
+            setProductsPrices(newProducts, apiProducts);
         }
-
-        System.debug('newProducts size: ' + newProducts.size());
 
         return newProducts;
     }
@@ -63,32 +62,28 @@ public with sharing class ProductHandler {
         return productsNames;
     }
 
-    private static Boolean doesProductExist(String itemName, List<String> orgProducts) {
-        return orgProducts.contains(itemName.trim());
-    }
-
-    private static Product2 createProduct(ProductWrapper item) {
+    private static Product2 createProduct(ProductWrapper apiProduct) {
         Product2 product = new Product2();
 
-        product.Name = item.title;
-        product.Description = item.description;
-        product.Family = item.category;
-        product.Image__c = item.image;
-        product.Rating__c = item.rating.rate;
-        product.Rating_count__c = item.rating.count;
+        product.Name = apiProduct.title;
+        product.Description = apiProduct.description;
+        product.Family = apiProduct.category;
+        product.Image__c = apiProduct.image;
+        product.Rating__c = apiProduct.rating.rate;
+        product.Rating_count__c = apiProduct.rating.count;
         product.IsActive = true;
 
         return product;
     }
 
-    private static void setProductsPrices(List<Product2> newProducts, List<ProductWrapper> items) {
+    private static void setProductsPrices(List<Product2> newProducts, List<ProductWrapper> apiProducts) {
         Pricebook2 standardPb = getStandardPriceBook();
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 
         for (Product2 product : newProducts) {
-            for (ProductWrapper item : items) {
-                if (product.Name == item.title) {
-                    pricebookEntries.add(createPricebookEntry(product.Id, standardPb.Id, item.price));
+            for (ProductWrapper apiProduct : apiProducts) {
+                if (product.Name == apiProduct.title) {
+                    pricebookEntries.add(createPricebookEntry(product.Id, standardPb.Id, apiProduct.price));
                 }
             }
         }
