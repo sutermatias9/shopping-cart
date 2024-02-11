@@ -17,6 +17,10 @@ public with sharing class ProductHandler {
         ];
     }
 
+    /**
+     * Fetches product data from the API, creates new products if the don't exist in the org,
+     * and sets prices for the standard price book.
+     */
     private static void synchronizeProductsFromApi() {
         HttpResponse response = sendHttpRequest();
         List<ProductWrapper> apiProducts = ProductWrapper.parse(response.getBody());
@@ -24,15 +28,25 @@ public with sharing class ProductHandler {
         createProducts(apiProducts);
     }
 
+    /**
+     * @return HttpResponse object containing the API response.
+     */
     private static HttpResponse sendHttpRequest() {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
 
         request.setMethod('GET');
         request.setEndpoint(API_URL + 'products');
+
         return http.send(request);
     }
 
+    /**
+     * Creates new Product2 records and set prices based on the API response.
+     *
+     * @param apiProducts - List of ProductWrapper objects containing API product data.
+     * @return List of newly created Product2 records.
+     */
     private static List<Product2> createProducts(List<ProductWrapper> apiProducts) {
         List<String> existingProductsNames = getExistingProductsNames();
         List<Product2> newProducts = new List<Product2>();
@@ -76,6 +90,12 @@ public with sharing class ProductHandler {
         return product;
     }
 
+    /**
+     * Set prices for the standard pricebook base on the provided API product data.
+     *
+     * @param newProducts - List of newly created Product2 records.
+     * @param apiProducts - List of ProductWrapper objects containing API product data.
+     */
     private static void setProductsPrices(List<Product2> newProducts, List<ProductWrapper> apiProducts) {
         Pricebook2 standardPb = getStandardPriceBook();
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
