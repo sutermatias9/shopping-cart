@@ -17,6 +17,11 @@ public with sharing class ProductHandler {
         ];
     }
 
+
+
+//Testeando branch conflict
+//Testeando branch conflict
+//Testeando branch conflict
     private static void insertProductsFromApi() {
         HttpResponse response = sendHttpRequest();
         List<ProductWrapper> itemList = ProductWrapper.parse(response.getBody());
@@ -32,6 +37,15 @@ public with sharing class ProductHandler {
         request.setEndpoint(URL + 'products');
         return http.send(request);
     }
+//Testeando branch conflict
+
+//Testeando branch conflict
+
+//Testeando branch conflict
+
+//Testeando branch conflict
+
+//Testeando branch conflict
 
     private static List<Product2> createProducts(List<ProductWrapper> items) {
         List<String> existingProductsNames = getExistingProductsNames();
@@ -77,6 +91,8 @@ public with sharing class ProductHandler {
         product.Rating__c = item.rating.rate;
         product.Rating_count__c = item.rating.count;
         product.IsActive = true;
+System.debug('//Testeando branch conflict');
+
 
         return product;
     }
@@ -95,6 +111,7 @@ public with sharing class ProductHandler {
 
         insert pricebookEntries;
     }
+//Testeando branch conflict
 
     private static Pricebook2 getStandardPricebook() {
         return [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1];
