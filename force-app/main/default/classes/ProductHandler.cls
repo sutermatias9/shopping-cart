@@ -86,6 +86,7 @@ public with sharing class ProductHandler {
         product.Rating__c = apiProduct.rating.rate;
         product.Rating_count__c = apiProduct.rating.count;
         product.IsActive = true;
+        System.debug('//Testeando branch conflict');
 
         return product;
     }
@@ -110,6 +111,7 @@ public with sharing class ProductHandler {
 
         insert pricebookEntries;
     }
+    //Testeando branch conflict
 
     private static Pricebook2 getStandardPricebook() {
         return [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1];
