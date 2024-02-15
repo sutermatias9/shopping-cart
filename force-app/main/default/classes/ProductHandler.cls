@@ -21,6 +21,7 @@ public with sharing class ProductHandler {
      * Fetches product data from the API, creates new products if the don't exist in the org,
      * and sets prices for the standard price book.
      */
+    @TestVisible
     private static void synchronizeProductsFromApi() {
         HttpResponse response = sendHttpRequest();
         List<ProductWrapper> apiProducts = ProductWrapper.parse(response.getBody());
@@ -86,7 +87,6 @@ public with sharing class ProductHandler {
         product.Rating__c = apiProduct.rating.rate;
         product.Rating_count__c = apiProduct.rating.count;
         product.IsActive = true;
-        System.debug('//Testeando branch conflict');
 
         return product;
     }
@@ -98,23 +98,26 @@ public with sharing class ProductHandler {
      * @param apiProducts - List of ProductWrapper objects containing API product data.
      */
     private static void setProductsPrices(List<Product2> newProducts, List<ProductWrapper> apiProducts) {
-        Pricebook2 standardPb = getStandardPriceBook();
+        Id standardPbId = getStandardPriceBookId();
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 
         for (Product2 product : newProducts) {
             for (ProductWrapper apiProduct : apiProducts) {
                 if (product.Name == apiProduct.title) {
-                    pricebookEntries.add(createPricebookEntry(product.Id, standardPb.Id, apiProduct.price));
+                    pricebookEntries.add(createPricebookEntry(product.Id, standardPbId, apiProduct.price));
                 }
             }
         }
 
         insert pricebookEntries;
     }
-    //Testeando branch conflict
 
-    private static Pricebook2 getStandardPricebook() {
-        return [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1];
+    private static Id getStandardPricebookId() {
+        if (Test.isRunningTest()) {
+            return Test.getStandardPricebookId();
+        }
+
+        return [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
     }
 
     private static PricebookEntry createPriceBookEntry(Id productId, Id spbId, Decimal price) {
