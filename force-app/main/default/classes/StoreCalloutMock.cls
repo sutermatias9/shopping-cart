@@ -1,3 +1,4 @@
+@isTest
 public with sharing class StoreCalloutMock implements HttpCalloutMock {
     public HttpResponse respond(HttpRequest req) {
         HttpResponse response = new HttpResponse();
