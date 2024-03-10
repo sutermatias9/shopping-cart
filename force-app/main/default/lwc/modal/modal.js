@@ -17,6 +17,16 @@ export default class Modal extends LightningElement {
         return this.isValidSize() ? `slds-modal slds-fade-in-open slds-modal_${this.size}` : baseClass;
     }
 
+    connectedCallback() {
+        // Add event listener for 'keydown' when the component is connected to the DOM
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+    }
+
+    disconnectedCallback() {
+        // Remove event listener for 'keydown' when the component is disconnected to the DOM
+        document.removeEventListener('keydown', this.handleKeyDown);
+    }
+
     handleKeyDown(event) {
         if (event.code === 'Escape') {
             this.fireCloseModalEvent();
