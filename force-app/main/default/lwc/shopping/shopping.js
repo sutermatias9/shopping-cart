@@ -4,7 +4,7 @@ import getProducts from '@salesforce/apex/ProductHandler.getProducts';
 const CATEGORIES = ["Women's Clothing", "Men's Clothing", 'Jewelery', 'Electronics'];
 
 export default class Shopping extends LightningElement {
-    allProducts;
+    products;
     selectedProduct;
 
     /**
@@ -28,7 +28,7 @@ export default class Shopping extends LightningElement {
     @wire(getProducts)
     wiredProducts({ data, error }) {
         if (data) {
-            this.allProducts = data;
+            this.products = data;
         } else {
             this.error = error;
         }
@@ -43,7 +43,7 @@ export default class Shopping extends LightningElement {
             return this.getFilteredProducts();
         }
 
-        return this.allProducts;
+        return this.products;
     }
 
     /**
@@ -51,8 +51,8 @@ export default class Shopping extends LightningElement {
      * @returns {Number} - The rounded highest unit price.
      */
     get highestPrice() {
-        if (this.allProducts) {
-            const price = this.allProducts.reduce((maxPrice, product) => {
+        if (this.products) {
+            const price = this.products.reduce((maxPrice, product) => {
                 const unitPrice = this.getPrice(product);
                 return Math.max(maxPrice, unitPrice);
             }, 0);
@@ -75,28 +75,32 @@ export default class Shopping extends LightningElement {
         this.filters = event.detail;
     }
 
-    handleCartIconClick() {
-        this.showModal('cart');
-    }
-
-    handleTileClick(event) {
-        this.selectedProduct = event.currentTarget.product;
-
-        this.showModal('product');
-    }
-
     handleModalClose(event) {
-        const modalType = this.getModalType(event);
+        const modalType = event.currentTarget.classList.contains('cart') ? 'cart' : 'product';
 
         this.closeModal(modalType);
     }
 
+    handleProductSelect(event) {
+        this.selectedProduct = event.detail;
+        console.log('SELECTED: ', JSON.stringify(this.selectedProduct));
+        this.showModal('product');
+    }
+
+    handleViewCart() {
+        this.showModal('cart');
+    }
+
     handleAddToCart(event) {
-        this.addProductToCart(event.detail);
+        const productData = event.detail;
+
+        this.cartProducts.push(productData);
     }
 
     handleRemoveFromCart(event) {
-        this.removeProductFromCart(event.detail);
+        const productName = event.detail;
+
+        this.cartProducts = this.cartProducts.filter((product) => product.Name !== productName);
     }
 
     handleCartCancel() {
@@ -115,7 +119,7 @@ export default class Shopping extends LightningElement {
     getFilteredProducts() {
         const { maxPrice, minPrice, category } = this.filters;
 
-        return this.allProducts.filter((product) => {
+        return this.products.filter((product) => {
             const meetsCategoryCriteria = this.meetsCategoryCriteria(product, category);
             const meetsPriceCriteria = this.meetsPriceCriteria(product, minPrice, maxPrice);
 
@@ -123,17 +127,6 @@ export default class Shopping extends LightningElement {
         });
     }
 
-    getModalType(event) {
-        return event.currentTarget.classList.contains('cart') ? 'cart' : 'product';
-    }
-
-    /**
-     * @function meetsCategoryCriteria
-     * @description Checks if Product meets the category filter.
-     * @param {Object} product - The product to check.
-     * @param {String} category - The selected category filter.
-     * @returns {Boolean} - True if no category was selected or if it meets the category criteria, false otherwise.
-     */
     meetsCategoryCriteria(product, category) {
         return category === null || product.Family === category;
     }
@@ -158,13 +151,5 @@ export default class Shopping extends LightningElement {
         } else {
             this.isProductDetailOpen = false;
         }
-    }
-
-    addProductToCart(productData) {
-        this.cartProducts.push(productData);
-    }
-
-    removeProductFromCart(productName) {
-        this.cartProducts = this.cartProducts.filter((product) => product.Name !== productName);
     }
 }
