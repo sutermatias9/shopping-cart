@@ -2,19 +2,17 @@ public with sharing class ProductHandler {
     private static final String API_URL = 'https://fakestoreapi.com/';
 
     @AuraEnabled(cacheable=true)
-    public static List<Product2> getProducts() {
-        return [
-            SELECT
-                Id,
-                Name,
-                Description,
-                Family,
-                Image__c,
-                Rating__c,
-                Rating_Count__c,
-                (SELECT UnitPrice FROM PricebookEntries WHERE Pricebook2.isStandard = TRUE LIMIT 1)
-            FROM Product2
-        ];
+    public static List<Product2> getProducts(String fields, String condition) {
+        String query =
+            'SELECT ' +
+            fields +
+            ', (SELECT UnitPrice FROM PricebookEntries WHERE Pricebook2.isStandard = TRUE) FROM Product2 ';
+
+        if (condition != null) {
+            query += 'WHERE ' + condition;
+        }
+
+        return Database.query(query);
     }
 
     /**
