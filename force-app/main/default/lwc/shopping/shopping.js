@@ -1,5 +1,8 @@
 import { LightningElement, wire, track } from 'lwc';
 import getProducts from '@salesforce/apex/ProductHandler.getProducts';
+import getCartProductIds from '@salesforce/apex/CartHandler.getCartProductIds';
+import addToCart from '@salesforce/apex/CartItemHandler.addToCart';
+import userId from '@salesforce/user/Id';
 
 const CATEGORIES = ["Women's Clothing", "Men's Clothing", 'Jewelery', 'Electronics'];
 
@@ -17,7 +20,8 @@ export default class Shopping extends LightningElement {
     isProductDetailOpen = false;
     isCartOpen = false;
 
-    @track cartProducts = [];
+    @track cartProductIds = [];
+    isCartUpdating = false;
 
     error;
 
@@ -25,7 +29,7 @@ export default class Shopping extends LightningElement {
      * @wire - Gets all the products in the org using the getProducts wire adapter.
      * @param {Object} param0- Data and error properties returned by the adapter.
      */
-    @wire(getProducts)
+    @wire(getProducts, { fields: 'Name, Description, Family, Image__c, Rating__c' })
     wiredProducts({ data, error }) {
         if (data) {
             this.products = data;
@@ -65,10 +69,14 @@ export default class Shopping extends LightningElement {
 
     get isProductInCart() {
         if (this.isProductDetailOpen) {
-            return this.cartProducts.some((cartProduct) => cartProduct.Name === this.selectedProduct.Name);
+            return this.cartProductIds.includes(this.selectedProduct.Id);
         }
 
         return false;
+    }
+
+    connectedCallback() {
+        this.refreshCartProducts();
     }
 
     handleApplyFiltersClick(event) {
@@ -91,10 +99,17 @@ export default class Shopping extends LightningElement {
         this.showModal('cart');
     }
 
-    handleAddToCart(event) {
-        const productData = event.detail;
+    async handleAddToCart(event) {
+        const { productId, quantity } = event.detail;
+        this.isCartUpdating = true;
 
-        this.cartProducts.push(productData);
+        try {
+            await addToCart({ userId, productId, quantity });
+            this.refreshCartProducts();
+            this.isCartUpdating = false;
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     handleRemoveFromCart(event) {
@@ -135,6 +150,15 @@ export default class Shopping extends LightningElement {
         const price = this.getPrice(product);
 
         return price >= minPrice && price < maxPrice;
+    }
+
+    async refreshCartProducts() {
+        try {
+            const result = await getCartProductIds({ userId });
+            this.cartProductIds = result;
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     showModal(modal) {
