@@ -6,6 +6,7 @@ export default class ProductDetail extends LightningElement {
      */
     @api product;
     @api isInCart;
+    @api disabled;
 
     quantity = 1;
 
@@ -23,9 +24,8 @@ export default class ProductDetail extends LightningElement {
 
     handleAddToCartClick() {
         this.fireCustomEvent('addtocart', {
-            Name: this.product.Name,
-            Price: this.productPrice,
-            Quantity: this.quantity
+            productId: this.product.Id,
+            quantity: this.quantity
         });
     }
 

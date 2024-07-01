@@ -49,11 +49,12 @@
         <div slot="footer">
             <!-- Conditional rendering of Add or Remove Button -->
             <template lwc:if={isInCart}>
-                <lightning-button variant="destructive" label="Remove from cart"
-                    onclick={handleCartRemoveClick}></lightning-button>
+                <lightning-button variant="destructive" label="Remove from cart" onclick={handleCartRemoveClick}
+                    disabled={disabled}></lightning-button>
             </template>
             <template lwc:else>
-                <lightning-button variant="brand" label="Add to cart" onclick={handleAddToCartClick}></lightning-button>
+                <lightning-button variant="brand" label="Add to cart" onclick={handleAddToCartClick}
+                    disabled={disabled}></lightning-button>
             </template>
         </div>
     </c-modal>
