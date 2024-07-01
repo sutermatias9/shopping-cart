@@ -98,36 +98,18 @@ public with sharing class ProductHandler {
      * @param apiProducts - List of ProductWrapper objects containing API product data.
      */
     private static void setProductsPrices(List<Product2> newProducts, List<ProductWrapper> apiProducts) {
-        Id standardPbId = getStandardPriceBookId();
+        Id standardPbId = PricebookHandler.getStandardPriceBookId();
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 
         for (Product2 product : newProducts) {
             for (ProductWrapper apiProduct : apiProducts) {
                 if (product.Name == apiProduct.title) {
-                    pricebookEntries.add(createPricebookEntry(product.Id, standardPbId, apiProduct.price));
+                    PricebookEntry pbe = PricebookEntryHandler.createRecord(product.Id, standardPbId, apiProduct.price);
+                    pricebookEntries.add(pbe);
                 }
             }
         }
 
         insert pricebookEntries;
-    }
-
-    private static Id getStandardPricebookId() {
-        if (Test.isRunningTest()) {
-            return Test.getStandardPricebookId();
-        }
-
-        return [SELECT Id FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
-    }
-
-    private static PricebookEntry createPriceBookEntry(Id productId, Id spbId, Decimal price) {
-        PricebookEntry pbe = new PricebookEntry();
-
-        pbe.UnitPrice = price;
-        pbe.Pricebook2Id = spbId;
-        pbe.Product2Id = productId;
-        pbe.IsActive = true;
-
-        return pbe;
     }
 }
