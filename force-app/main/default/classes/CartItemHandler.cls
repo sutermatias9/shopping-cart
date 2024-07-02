@@ -31,13 +31,11 @@ public with sharing class CartItemHandler {
     }
 
     public static void handleAfterInsert(List<Cart_Item__c> triggerNew) {
-        List<Id> cartIds = new List<Id>();
+        updateCartTotalPrice(triggerNew);
+    }
 
-        for (Cart_Item__c item : triggerNew) {
-            cartIds.add(item.Cart__c);
-        }
-
-        CartHandler.updateTotalPrices(cartIds);
+    public static void handleAfterDelete(List<Cart_Item__c> triggerOld) {
+        updateCartTotalPrice(triggerOld);
     }
 
     private static Cart_Item__c createRecord(Id cartId, Id productId, Integer quantity) {
@@ -52,5 +50,15 @@ public with sharing class CartItemHandler {
 
         insert record;
         return record;
+    }
+
+    private static void updateCartTotalPrice(List<Cart_Item__c> items) {
+        List<Id> cartIds = new List<Id>();
+
+        for (Cart_Item__c item : items) {
+            cartIds.add(item.Cart__c);
+        }
+
+        CartHandler.updateTotalPrices(cartIds);
     }
 }
