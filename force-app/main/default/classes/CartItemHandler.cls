@@ -30,6 +30,16 @@ public with sharing class CartItemHandler {
         }
     }
 
+    public static void handleAfterInsert(List<Cart_Item__c> triggerNew) {
+        List<Id> cartIds = new List<Id>();
+
+        for (Cart_Item__c item : triggerNew) {
+            cartIds.add(item.Cart__c);
+        }
+
+        CartHandler.updateTotalPrices(cartIds);
+    }
+
     private static Cart_Item__c createRecord(Id cartId, Id productId, Integer quantity) {
         Product2 product = ProductHandler.getProducts('Name', 'Id = \'' + productId + '\'')[0];
 

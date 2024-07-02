@@ -38,4 +38,21 @@ public with sharing class CartHandler {
         insert record;
         return record;
     }
+
+    public static void updateTotalPrices(List<Id> cartIds) {
+        List<Cart__c> cartsToUpdate = new List<Cart__c>();
+
+        for (Cart__c cart : [SELECT Id, Total_Price__c, (SELECT Unit_Price__c, Quantity__c FROM Cart_Items__r) FROM Cart__c WHERE Id IN :cartIds]) {
+            Decimal total = 0;
+
+            for (Cart_Item__c item : cart.Cart_Items__r) {
+                total += item.Unit_Price__c * item.Quantity__c;
+            }
+
+            cart.Total_Price__c = total;
+            cartsToUpdate.add(cart);
+        }
+
+        update cartsToUpdate;
+    }
 }
