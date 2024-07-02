@@ -1,6 +1,6 @@
 public with sharing class CartItemHandler {
     @AuraEnabled
-    public static void addToCart(Id userId, Id productId, Integer quantity) {
+    public static void addToCart(Id productId, Integer quantity, Id userId) {
         try {
             Cart__c cart = CartHandler.getCart(userId, 'Active');
 
@@ -11,6 +11,22 @@ public with sharing class CartItemHandler {
             createRecord(cart.Id, productId, quantity);
         } catch (Exception e) {
             throw new AuraHandledException(e.getLineNumber() + '-> Error adding to cart: ' + e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void removeFromCart(Id productId, Id userId) {
+        try {
+            Cart_Item__c item = [
+                SELECT Id
+                FROM Cart_Item__c
+                WHERE Product__c = :productId AND Cart__r.User__c = :userId AND Cart__r.Status__c = 'Active'
+                LIMIT 1
+            ];
+
+            delete item;
+        } catch (Exception e) {
+            throw new AuraHandledException('Error removing from cart: ' + e.getMessage());
         }
     }
 

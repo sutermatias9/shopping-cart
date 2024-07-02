@@ -2,6 +2,7 @@ import { LightningElement, wire, track } from 'lwc';
 import getProducts from '@salesforce/apex/ProductHandler.getProducts';
 import getCartProductIds from '@salesforce/apex/CartHandler.getCartProductIds';
 import addToCart from '@salesforce/apex/CartItemHandler.addToCart';
+import removeFromCart from '@salesforce/apex/CartItemHandler.removeFromCart';
 import userId from '@salesforce/user/Id';
 
 const CATEGORIES = ["Women's Clothing", "Men's Clothing", 'Jewelery', 'Electronics'];
@@ -112,10 +113,18 @@ export default class Shopping extends LightningElement {
         }
     }
 
-    handleRemoveFromCart(event) {
-        const productName = event.detail;
+    async handleRemoveFromCart(event) {
+        const productId = event.detail;
 
-        this.cartProducts = this.cartProducts.filter((product) => product.Name !== productName);
+        try {
+            this.isCartUpdating = true;
+            await removeFromCart({ productId, userId });
+            this.refreshCartProducts();
+            this.isCartUpdating = false;
+        } catch (e) {
+            console.log(e);
+        }
+        // this.cartProducts = this.cartProducts.filter((product) => product.Name !== productName);
     }
 
     handleCartCancel() {

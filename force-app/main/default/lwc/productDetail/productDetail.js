@@ -30,7 +30,7 @@ export default class ProductDetail extends LightningElement {
     }
 
     handleCartRemoveClick() {
-        this.fireCustomEvent('removefromcart', this.product.Name);
+        this.fireCustomEvent('removefromcart', this.product.Id);
     }
 
     fireCustomEvent(eventName, detail) {
