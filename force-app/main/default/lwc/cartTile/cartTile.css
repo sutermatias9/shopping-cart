@@ -9,9 +9,15 @@
 }
 
 .container {
-    height: 150px;
+    height: 100px;
 }
 
 .image-container {
     height: 100%;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: green;
 }
