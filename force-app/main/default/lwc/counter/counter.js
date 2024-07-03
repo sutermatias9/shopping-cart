@@ -1,7 +1,14 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class Counter extends LightningElement {
+    @api initialValue;
     currentValue = 1;
+
+    connectedCallback() {
+        if (this.initialValue) {
+            this.currentValue = this.initialValue;
+        }
+    }
 
     handleDecrementClick() {
         this.updateNumber('decrement');
