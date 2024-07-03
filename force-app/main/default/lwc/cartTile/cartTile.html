@@ -16,7 +16,8 @@
                         </div>
                         <div class="slds-col">
                             <div class="counter">
-                                <c-counter initial-value={item.Quantity__c} onchange={handleCounterChange}></c-counter>
+                                <c-counter initial-value={item.Quantity__c} onchange={handleCounterChange}
+                                    disabled={isUpdating}></c-counter>
                             </div>
                         </div>
                     </div>

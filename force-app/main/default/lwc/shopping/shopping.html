@@ -31,7 +31,7 @@
 
     <!-- Cart Modal -->
     <template lwc:if={isCartOpen}>
-        <c-cart cart={cartInfo} class='cart' onremove={handleRemoveFromCart} onmodalclose={handleModalClose}
-            oncancel={handleCartCancel}></c-cart>
+        <c-cart cart={cartInfo} class='cart' onupdate={handleCartUpdate} onremove={handleRemoveFromCart}
+            onmodalclose={handleModalClose} oncancel={handleCartCancel}></c-cart>
     </template>
 </template>

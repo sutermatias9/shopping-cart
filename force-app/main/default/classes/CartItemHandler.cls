@@ -30,6 +30,18 @@ public with sharing class CartItemHandler {
         }
     }
 
+    @AuraEnabled
+    public static void updateQuantity(Id itemId, Integer quantity) {
+        try {
+            Cart_Item__c item = [SELECT Quantity__c FROM Cart_Item__c WHERE Id = :itemId];
+            item.Quantity__c = quantity;
+
+            update item;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
     public static void handleAfterInsert(List<Cart_Item__c> triggerNew) {
         updateCartTotalPrice(triggerNew);
     }

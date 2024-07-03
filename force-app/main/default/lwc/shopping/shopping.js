@@ -1,6 +1,5 @@
 import { LightningElement, wire } from 'lwc';
 import getProducts from '@salesforce/apex/ProductHandler.getProducts';
-// import getCartProductIds from '@salesforce/apex/CartHandler.getCartProductIds';
 import getActiveCartInfo from '@salesforce/apex/CartHandler.getActiveCartInfo';
 import addToCart from '@salesforce/apex/CartItemHandler.addToCart';
 import removeFromCart from '@salesforce/apex/CartItemHandler.removeFromCart';
@@ -78,7 +77,7 @@ export default class Shopping extends LightningElement {
     }
 
     connectedCallback() {
-        this.refreshCartProducts();
+        this.refreshCart();
     }
 
     handleApplyFiltersClick(event) {
@@ -106,7 +105,7 @@ export default class Shopping extends LightningElement {
 
         try {
             await addToCart({ userId, productId, quantity });
-            this.refreshCartProducts();
+            this.refreshCart();
             this.isCartUpdating = false;
         } catch (e) {
             console.log(e);
@@ -119,11 +118,16 @@ export default class Shopping extends LightningElement {
 
         try {
             await removeFromCart({ productId, userId });
-            this.refreshCartProducts();
+            this.refreshCart();
             this.isCartUpdating = false;
         } catch (e) {
             console.log(e);
         }
+    }
+
+    handleCartUpdate() {
+        console.log('cartupdate');
+        this.refreshCart();
     }
 
     handleCartCancel() {
@@ -160,7 +164,7 @@ export default class Shopping extends LightningElement {
         return price >= minPrice && price < maxPrice;
     }
 
-    async refreshCartProducts() {
+    async refreshCart() {
         try {
             const result = await getActiveCartInfo({ userId });
             this.cartInfo = result;
