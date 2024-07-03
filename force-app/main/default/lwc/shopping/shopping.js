@@ -1,6 +1,7 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import getProducts from '@salesforce/apex/ProductHandler.getProducts';
-import getCartProductIds from '@salesforce/apex/CartHandler.getCartProductIds';
+// import getCartProductIds from '@salesforce/apex/CartHandler.getCartProductIds';
+import getActiveCartInfo from '@salesforce/apex/CartHandler.getActiveCartInfo';
 import addToCart from '@salesforce/apex/CartItemHandler.addToCart';
 import removeFromCart from '@salesforce/apex/CartItemHandler.removeFromCart';
 import userId from '@salesforce/user/Id';
@@ -21,7 +22,7 @@ export default class Shopping extends LightningElement {
     isProductDetailOpen = false;
     isCartOpen = false;
 
-    @track cartProductIds = [];
+    cartInfo = [];
     isCartUpdating = false;
 
     error;
@@ -70,7 +71,7 @@ export default class Shopping extends LightningElement {
 
     get isProductInCart() {
         if (this.isProductDetailOpen) {
-            return this.cartProductIds.includes(this.selectedProduct.Id);
+            return this.cartInfo.Cart_Items__r.some((item) => item.Product__c === this.selectedProduct.Id);
         }
 
         return false;
@@ -92,7 +93,6 @@ export default class Shopping extends LightningElement {
 
     handleProductSelect(event) {
         this.selectedProduct = event.detail;
-        console.log('SELECTED: ', JSON.stringify(this.selectedProduct));
         this.showModal('product');
     }
 
@@ -115,16 +115,15 @@ export default class Shopping extends LightningElement {
 
     async handleRemoveFromCart(event) {
         const productId = event.detail;
+        this.isCartUpdating = true;
 
         try {
-            this.isCartUpdating = true;
             await removeFromCart({ productId, userId });
             this.refreshCartProducts();
             this.isCartUpdating = false;
         } catch (e) {
             console.log(e);
         }
-        // this.cartProducts = this.cartProducts.filter((product) => product.Name !== productName);
     }
 
     handleCartCancel() {
@@ -163,8 +162,8 @@ export default class Shopping extends LightningElement {
 
     async refreshCartProducts() {
         try {
-            const result = await getCartProductIds({ userId });
-            this.cartProductIds = result;
+            const result = await getActiveCartInfo({ userId });
+            this.cartInfo = result;
         } catch (e) {
             console.log(e);
         }
