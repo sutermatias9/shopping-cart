@@ -46,6 +46,10 @@ public with sharing class CartItemHandler {
         updateCartTotalPrice(triggerNew);
     }
 
+    public static void handleAfterUpdate(List<Cart_Item__c> triggerNew) {
+        updateCartTotalPrice(triggerNew);
+    }
+
     public static void handleAfterDelete(List<Cart_Item__c> triggerOld) {
         updateCartTotalPrice(triggerOld);
     }

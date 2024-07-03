@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Cart extends LightningElement {
-    @api cart = [];
+    @api cart;
 
     handleCancelClick() {
         this.fireCancelEvent();
