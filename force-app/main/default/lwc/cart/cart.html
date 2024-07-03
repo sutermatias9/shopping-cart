@@ -1,7 +1,7 @@
 <!-- sldsValidatorIgnore -->
 <template>
     <!-- Cart Modal -->
-    <c-modal class="cart" size="medium">
+    <c-modal class="cart" size="small">
         <!-- Modal Header -->
         <span slot="title">Cart</span>
 
@@ -23,7 +23,8 @@
             <!-- Cancel Button -->
             <lightning-button label="Cancel" variant="brand-outline" onclick={handleCancelClick}></lightning-button>
 
-            <lightning-button label="Create Order" variant="brand" class="slds-var-m-left_medium"></lightning-button>
+            <lightning-button label="Create Order" variant="brand" class="slds-var-m-left_medium"
+                onclick={handleCreateClick} disabled={isCreating}></lightning-button>
         </div>
     </c-modal>
 </template>

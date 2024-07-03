@@ -1,5 +1,5 @@
 public with sharing class OrderItemHandler {
-    public static Cart_Item__c createRecord(Id orderId, Cart_Item__c cartItem) {
+    public static Order_Item__c createRecord(Id orderId, Cart_Item__c cartItem) {
         Order_Item__c orderItem = new Order_Item__c();
         orderItem.Order__c = orderId;
         orderItem.Name = cartItem.Name;

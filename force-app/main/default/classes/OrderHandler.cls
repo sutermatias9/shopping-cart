@@ -6,6 +6,7 @@ public with sharing class OrderHandler {
         Order__c order = new Order__c();
         order.Total_Price__c = cart.Total_Price__c;
         order.Order_Date__c = Datetime.now();
+        order.User__c = userId;
 
         insert order;
 
