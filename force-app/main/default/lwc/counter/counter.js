@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Counter extends LightningElement {
+    @api disabled = false;
     @api initialValue;
     currentValue = 1;
 

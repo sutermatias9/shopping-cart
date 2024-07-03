@@ -4,7 +4,7 @@
         <div class="slds-form-element__control">
             <!-- Decrement Button -->
             <button class="slds-button slds-button_icon slds-button_icon-small slds-input__button_decrement"
-                title="Decrement counter" onclick={handleDecrementClick}>
+                title="Decrement counter" onclick={handleDecrementClick} disabled={disabled}>
                 <svg class="slds-button__icon" aria-hidden="true">
                     <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#ban"></use>
                 </svg>
@@ -13,11 +13,11 @@
 
             <!-- Numeric Input -->
             <input type="number" id="default1" placeholder="1" class="slds-input slds-input_counter"
-                value={currentValue} oninput={handleNumberInput} />
+                value={currentValue} oninput={handleNumberInput} disabled={disabled} />
 
             <!-- Increment Button -->
             <button class="slds-button slds-button_icon slds-button_icon-small slds-input__button_increment"
-                title="Increment counter" onclick={handleIncrementClick}>
+                title="Increment counter" onclick={handleIncrementClick} disabled={disabled}>
                 <svg class="slds-button__icon" aria-hidden="true">
                     <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#new"></use>
                 </svg>
