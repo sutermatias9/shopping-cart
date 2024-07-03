@@ -15,4 +15,9 @@ export default class CartTile extends LightningElement {
     handleCounterChange(event) {
         this.quantity = event.detail;
     }
+
+    handleRemoveClick() {
+        const event = new CustomEvent('remove', { detail: this.item.Product__c, bubbles: true, composed: true });
+        this.dispatchEvent(event);
+    }
 }
