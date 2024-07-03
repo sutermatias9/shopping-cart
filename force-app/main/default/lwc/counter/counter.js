@@ -40,6 +40,6 @@ export default class Counter extends LightningElement {
     }
 
     fireCounterChangeEvent() {
-        this.dispatchEvent(new CustomEvent('counterchange', { detail: this.currentValue }));
+        this.dispatchEvent(new CustomEvent('change', { detail: this.currentValue }));
     }
 }

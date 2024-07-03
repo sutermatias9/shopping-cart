@@ -15,13 +15,13 @@
                         </div>
                         <div class="slds-col">
                             <div class="counter">
-                                <c-counter initial-value={item.Quantity__c}></c-counter>
+                                <c-counter initial-value={item.Quantity__c} onchange={handleCounterChange}></c-counter>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="slds-col slds-size_1-of-5 slds-align_absolute-center ">${item.Unit_Price__c}</div>
+        <div class="slds-col slds-size_1-of-5 slds-align_absolute-center price">${price}</div>
     </div>
 </template>
