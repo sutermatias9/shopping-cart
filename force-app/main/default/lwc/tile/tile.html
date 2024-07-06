@@ -2,6 +2,11 @@
 <template>
     <div class="slds-box tile">
         <div class="slds-grid slds-grid_vertical">
+            <template lwc:if={isInCart}>
+                <div class="slds-is-absolute">
+                    <lightning-badge label="Added"></lightning-badge>
+                </div>
+            </template>
 
             <!-- Product Image -->
             <div class="slds-col slds-align_absolute-center image-container"><img class="product-image"

@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class Catalog extends LightningElement {
     @api products;
+    @api cartProducts;
 
     handleTileClick(event) {
         const productSelected = event.currentTarget.product;

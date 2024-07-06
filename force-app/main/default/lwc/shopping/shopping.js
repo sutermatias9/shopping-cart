@@ -68,9 +68,17 @@ export default class Shopping extends LightningElement {
         return 0;
     }
 
+    get cartProducts() {
+        if (this.cartInfo) {
+            return this.cartInfo.Cart_Items__r;
+        }
+
+        return [];
+    }
+
     get isProductInCart() {
-        if (this.isProductDetailOpen && this.cartInfo) {
-            return this.cartInfo.Cart_Items__r.some((item) => item.Product__c === this.selectedProduct.Id);
+        if (this.isProductDetailOpen) {
+            return this.cartProducts.some((item) => item.Product__c === this.selectedProduct.Id);
         }
 
         return false;

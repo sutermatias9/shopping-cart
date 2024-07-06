@@ -13,7 +13,7 @@
                 <template for:each={products} for:item="product">
                     <div key={product.Id}
                         class="slds-col slds-size_1-of-3 slds-var-m-bottom_medium slds-align_absolute-center">
-                        <c-tile product={product} onclick={handleTileClick}></c-tile>
+                        <c-tile product={product} cart-products={cartProducts} onclick={handleTileClick}></c-tile>
                     </div>
                 </template>
             </div>

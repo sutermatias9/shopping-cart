@@ -16,7 +16,7 @@
                 </div>
             </template>
             <template lwc:else>
-                <c-catalog products={productsToShow} onproductselect={handleProductSelect}
+                <c-catalog products={productsToShow} cart-products={cartProducts} onproductselect={handleProductSelect}
                     onviewcart={handleViewCart}></c-catalog>
             </template>
         </div>
