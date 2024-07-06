@@ -7,6 +7,22 @@ export default class Cart extends LightningElement {
     @api cart;
     isCreating = false;
 
+    get cartItems() {
+        if (this.cart) {
+            return this.cart.Cart_Items__r;
+        }
+
+        return [];
+    }
+
+    get grandTotal() {
+        if (this.cart) {
+            return this.cart.Total_Price__c;
+        }
+
+        return 0;
+    }
+
     handleCancelClick() {
         this.fireCancelEvent();
     }

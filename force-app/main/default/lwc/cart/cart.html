@@ -7,15 +7,14 @@
 
         <!-- Modal Body -->
         <div slot="content">
-            <template for:each={cart.Cart_Items__r} for:item="item">
+            <template for:each={cartItems} for:item="item">
                 <div class="slds-box slds-var-m-bottom_medium" key={item.Id}>
                     <c-cart-tile item={item}></c-cart-tile>
                 </div>
             </template>
 
             <!-- Final Price of all added Products -->
-            <div class="slds-var-m-top_medium final-price">Grand Total: <span
-                    class="price">${cart.Total_Price__c}</span></div>
+            <div class="slds-var-m-top_medium final-price">Grand Total: <span class="price">${grandTotal}</span></div>
         </div>
 
         <!-- Modal Footer -->

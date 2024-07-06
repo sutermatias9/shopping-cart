@@ -21,7 +21,7 @@ export default class Shopping extends LightningElement {
     isProductDetailOpen = false;
     isCartOpen = false;
 
-    cartInfo = [];
+    cartInfo = null;
     isCartUpdating = false;
 
     error;
@@ -69,7 +69,7 @@ export default class Shopping extends LightningElement {
     }
 
     get isProductInCart() {
-        if (this.isProductDetailOpen) {
+        if (this.isProductDetailOpen && this.cartInfo) {
             return this.cartInfo.Cart_Items__r.some((item) => item.Product__c === this.selectedProduct.Id);
         }
 
