@@ -1,21 +1,17 @@
 public with sharing class CartHandler {
     @AuraEnabled
     public static Cart__c getActiveCartInfo(Id userId) {
-        try {
-            List<Cart__c> cart = [
-                SELECT Id, Total_Price__c, (SELECT Quantity__c, Unit_Price__c, Name, Product__c, Product__r.Image__c FROM Cart_Items__r)
-                FROM Cart__c
-                WHERE User__c = :userId AND Status__c = 'Active'
-            ];
+        List<Cart__c> cart = [
+            SELECT Id, Total_Price__c, (SELECT Quantity__c, Unit_Price__c, Name, Product__c, Product__r.Image__c FROM Cart_Items__r)
+            FROM Cart__c
+            WHERE User__c = :userId AND Status__c = 'Active'
+        ];
 
-            if (cart.isEmpty()) {
-                return null;
-            }
-
-            return cart[0];
-        } catch (Exception e) {
-            throw new AuraHandledException('Error getting cart products' + e.getMessage());
+        if (cart.isEmpty()) {
+            return null;
         }
+
+        return cart[0];
     }
 
     @AuraEnabled
@@ -24,8 +20,8 @@ public with sharing class CartHandler {
             Cart__c cart = [SELECT Status__c FROM Cart__c WHERE Status__c = 'Active' AND User__c = :userId];
             cart.Status__c = 'Purchased';
             update cart;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+        } catch (QueryException e) {
+            throw new AuraHandledException('The user with ID: ' + userId + ' does not have an active cart. ' + e.getMessage());
         }
     }
 
