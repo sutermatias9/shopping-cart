@@ -55,4 +55,28 @@ public with sharing class CartHandlerTest {
 
         Assert.areEqual('Purchased', cart.Status__c);
     }
+
+    @isTest
+    static void testGetCartWithPurchasedStatus() {
+        Id userId = TestDataFactory.createUser(true).Id;
+        TestDataFactory.createCart(userId, 'Purchased', 3);
+
+        Test.startTest();
+        Cart__c actualResult = CartHandler.getCart(userId, 'Purchased');
+        Test.stopTest();
+
+        Assert.isNotNull(actualResult, 'A cart should be returned.');
+    }
+
+    @isTest
+    static void testGetCartWhenUserHasNoActiveCart() {
+        Id userId = TestDataFactory.createUser(true).Id;
+        TestDataFactory.createCart(userId, 'Purchased', 3);
+
+        Test.startTest();
+        Cart__c actualResult = CartHandler.getCart(userId, 'Active');
+        Test.stopTest();
+
+        Assert.isNull(actualResult, 'Null should be returned.');
+    }
 }
