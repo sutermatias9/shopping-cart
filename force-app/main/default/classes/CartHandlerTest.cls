@@ -79,4 +79,51 @@ public with sharing class CartHandlerTest {
 
         Assert.isNull(actualResult, 'Null should be returned.');
     }
+
+    @isTest
+    static void testCreateCart() {
+        Id userId = TestDataFactory.createUser(true).Id;
+
+        Test.startTest();
+        Cart__c actualResult = CartHandler.createCart(userId);
+        Test.stopTest();
+
+        Assert.areEqual(userId, actualResult.User__c);
+        Assert.areEqual('Active', actualResult.Status__c, 'The cart status should be active.');
+        Assert.isTrue([SELECT Id FROM Cart__c WHERE User__c = :userId AND Status__c = 'Active'].size() > 0, 'The active cart should be inserted.');
+    }
+
+    @isTest
+    static void testUpdateTotalPrices() {
+        Id with3ItemsId = TestDataFactory.createUser(true).Id;
+        Id noItemsId = TestDataFactory.createUser(true).Id;
+
+        List<Id> cartIds = new List<Id>{
+            TestDataFactory.createCart(with3ItemsId, 'Purchased', 3).Id,
+            TestDataFactory.createCart(with3ItemsId, 'Active', 3).Id,
+            TestDataFactory.createCart(noItemsId, 'Active', 0).Id
+        };
+
+        Test.startTest();
+        CartHandler.updateTotalPrices(cartIds);
+        Test.stopTest();
+
+        List<Cart_Item__c> items = [SELECT Id, Cart__c, Quantity__c, Unit_Price__c FROM Cart_Item__c];
+
+        for (Cart__c cart : [SELECT Id, Total_Price__c FROM Cart__c]) {
+            Decimal expectedTotal = 0;
+
+            for (Cart_Item__c item : items) {
+                if (item.Cart__c == cart.Id) {
+                    expectedTotal += item.Quantity__c * item.Unit_Price__c;
+                }
+            }
+
+            Assert.areEqual(
+                expectedTotal,
+                cart.Total_Price__c,
+                'The total price of the cart with Id ' + cart.Id + ' should be ' + expectedTotal + ' but was ' + cart.Total_Price__c
+            );
+        }
+    }
 }

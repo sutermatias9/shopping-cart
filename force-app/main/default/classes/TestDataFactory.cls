@@ -7,7 +7,7 @@ public with sharing class TestDataFactory {
         u.Email = 'suter@gmail.com';
         u.Alias = 'Tuser';
         u.Username = 'suter' + System.currentTimeMillis() + '@gmail.com';
-        u.CommunityNickname = 'testU213';
+        u.CommunityNickname = 'test' + System.currentTimeMillis();
         u.LocaleSidKey = 'en_US';
         u.TimeZoneSidKey = 'GMT';
         u.ProfileID = profileId;
@@ -28,7 +28,9 @@ public with sharing class TestDataFactory {
 
         insert record;
 
-        createCartItems(record.Id, numberOfItems, true);
+        if (numberOfItems > 0) {
+            createCartItems(record.Id, numberOfItems, true);
+        }
 
         return record;
     }
