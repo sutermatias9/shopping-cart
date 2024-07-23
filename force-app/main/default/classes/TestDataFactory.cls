@@ -58,10 +58,12 @@ public with sharing class TestDataFactory {
     }
 
     public static List<Product2> createProducts(Integer numberOfProducts, Boolean doInsert) {
+        List<String> familyValues = new List<String>{ 'men\'s clothing', 'jewelery', 'electronics', 'women\'s clothing' };
         List<Product2> productRecords = new List<Product2>();
 
         for (Integer i = 0; i < numberOfProducts; i++) {
             Product2 product = new Product2(Name = 'Test product ' + i);
+            product.Family = familyValues[Math.floor(Math.random() * familyValues.size())];
             productRecords.add(product);
         }
 
@@ -70,5 +72,18 @@ public with sharing class TestDataFactory {
         }
 
         return productRecords;
+    }
+
+    public static PricebookEntry createPricebookEntry(Id productId, Id pricebookId, Boolean doInsert) {
+        PricebookEntry pbe = new PricebookEntry();
+        pbe.Product2Id = productId;
+        pbe.Pricebook2Id = pricebookId;
+        pbe.UnitPrice = 100;
+
+        if (doInsert) {
+            insert pbe;
+        }
+
+        return pbe;
     }
 }
