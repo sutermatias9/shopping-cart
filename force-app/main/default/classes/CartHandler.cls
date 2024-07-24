@@ -30,7 +30,7 @@ public with sharing class CartHandler {
     }
 
     public static Cart__c getCart(Id userId, String status) {
-        List<Cart__c> cart = [SELECT Id FROM Cart__c WHERE Status__c = :status];
+        List<Cart__c> cart = [SELECT Id FROM Cart__c WHERE Status__c = :status AND User__c = :userId];
 
         if (cart.isEmpty()) {
             return null;

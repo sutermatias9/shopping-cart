@@ -3,10 +3,13 @@ public with sharing class ProductHandler {
 
     @AuraEnabled(cacheable=true)
     public static List<Product2> getProducts(String fields, String condition) {
-        String query =
-            'SELECT ' +
-            fields +
-            ', (SELECT UnitPrice FROM PricebookEntries WHERE Pricebook2.isStandard = TRUE) FROM Product2 ';
+        String query = 'SELECT ' + fields + ', (SELECT UnitPrice FROM PricebookEntries WHERE Pricebook2.isStandard = TRUE) FROM Product2 ';
+
+        if (Test.isRunningTest()) {
+            Id testStandardPbId = Test.getStandardPricebookId();
+
+            query = 'SELECT ' + fields + ', (SELECT UnitPrice FROM PricebookEntries WHERE Pricebook2Id = :testStandardPbId) FROM Product2 ';
+        }
 
         if (condition != null) {
             query += 'WHERE ' + condition;
