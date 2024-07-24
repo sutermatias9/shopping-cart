@@ -1,13 +1,13 @@
 @isTest
 public with sharing class TestDataFactory {
-    public static User createUser(Boolean doInsert) {
+    public static User createUser(String lastName, Boolean doInsert) {
         Id profileId = [SELECT Id FROM Profile WHERE Name = 'Standard User'].Id;
         User u = new user();
-        u.LastName = 'Test User';
-        u.Email = 'suter@gmail.com';
-        u.Alias = 'Tuser';
+        u.LastName = lastName;
+        u.Email = System.currentTimeMillis() + '@g.com';
+        u.Alias = 'testuser';
         u.Username = 'suter' + System.currentTimeMillis() + '@gmail.com';
-        u.CommunityNickname = 'testU213';
+        u.CommunityNickname = 't' + System.currentTimeMillis();
         u.LocaleSidKey = 'en_US';
         u.TimeZoneSidKey = 'GMT';
         u.ProfileID = profileId;
@@ -68,5 +68,18 @@ public with sharing class TestDataFactory {
         }
 
         return productRecords;
+    }
+
+    public static PricebookEntry createPricebookEntry(Id productId, Id pricebookId, Boolean doInsert) {
+        PricebookEntry pbe = new PricebookEntry();
+        pbe.UnitPrice = 100;
+        pbe.Product2Id = productId;
+        pbe.Pricebook2Id = pricebookId;
+
+        if (doInsert) {
+            insert pbe;
+        }
+
+        return pbe;
     }
 }
