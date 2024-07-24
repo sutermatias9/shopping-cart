@@ -1,11 +1,11 @@
 @isTest
 public with sharing class TestDataFactory {
-    public static User createUser(Boolean doInsert) {
+    public static User createUser(String lastName, Boolean doInsert) {
         Id profileId = [SELECT Id FROM Profile WHERE Name = 'Standard User'].Id;
         User u = new user();
-        u.LastName = 'Test User';
-        u.Email = 'suter@gmail.com';
-        u.Alias = 'Tuser';
+        u.LastName = lastName;
+        u.Email = System.currentTimeMillis() + '@g.com';
+        u.Alias = 'testuser';
         u.Username = 'suter' + System.currentTimeMillis() + '@gmail.com';
         u.CommunityNickname = 'test' + System.currentTimeMillis();
         u.LocaleSidKey = 'en_US';
