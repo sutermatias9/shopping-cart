@@ -8,7 +8,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testGetActiveCartInfoNoActiveCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
 
         Test.startTest();
         Cart__c actualResult = CartHandler.getActiveCartInfo(userId);
@@ -19,7 +19,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testGetActiveCartInfoHasActiveCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
         TestDataFactory.createCart(userId, 'Active', 3);
 
         Test.startTest();
@@ -32,7 +32,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testSetAsPurchasedNoActiveCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
 
         try {
             CartHandler.setAsPurchased(userId);
@@ -44,7 +44,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testSetAsPurchasedHasActiveCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
         TestDataFactory.createCart(userId, 'Active', 3);
 
         Test.startTest();
@@ -58,7 +58,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testGetCartWithPurchasedStatus() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
         TestDataFactory.createCart(userId, 'Purchased', 3);
 
         Test.startTest();
@@ -70,7 +70,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testGetCartWhenUserHasNoActiveCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
         TestDataFactory.createCart(userId, 'Purchased', 3);
 
         Test.startTest();
@@ -82,7 +82,7 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testCreateCart() {
-        Id userId = TestDataFactory.createUser(true).Id;
+        Id userId = TestDataFactory.createUser('test', true).Id;
 
         Test.startTest();
         Cart__c actualResult = CartHandler.createCart(userId);
@@ -95,8 +95,8 @@ public with sharing class CartHandlerTest {
 
     @isTest
     static void testUpdateTotalPrices() {
-        Id with3ItemsId = TestDataFactory.createUser(true).Id;
-        Id noItemsId = TestDataFactory.createUser(true).Id;
+        Id with3ItemsId = TestDataFactory.createUser('test', true).Id;
+        Id noItemsId = TestDataFactory.createUser('test', true).Id;
 
         List<Id> cartIds = new List<Id>{
             TestDataFactory.createCart(with3ItemsId, 'Purchased', 3).Id,

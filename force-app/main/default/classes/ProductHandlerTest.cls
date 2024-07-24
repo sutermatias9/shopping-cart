@@ -30,7 +30,7 @@ public with sharing class ProductHandlerTest {
     @isTest
     static void testGetProductsWithCondition() {
         Test.startTest();
-        List<Product2> result = ProductHandler.getProducts('Name, Description', 'Family = \'electronics\'');
+        List<Product2> result = ProductHandler.getProducts('Name, Description, Family', 'Family = \'electronics\'');
         Test.stopTest();
 
         for (Product2 product : result) {
