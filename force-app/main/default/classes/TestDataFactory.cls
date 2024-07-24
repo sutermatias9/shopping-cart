@@ -63,7 +63,8 @@ public with sharing class TestDataFactory {
 
         for (Integer i = 0; i < numberOfProducts; i++) {
             Product2 product = new Product2(Name = 'Test product ' + i);
-            product.Family = familyValues[Math.floor(Math.random() * familyValues.size())];
+            Integer randomIndex = (Integer) Math.floor(Math.random() * familyValues.size());
+            product.Family = familyValues[randomIndex];
             productRecords.add(product);
         }
 
@@ -85,5 +86,18 @@ public with sharing class TestDataFactory {
         }
 
         return pbe;
+    }
+
+    public static Order__c createOrder(Cart__c cart, Id userId, Boolean doInsert) {
+        Order__c order = new Order__c();
+        order.Total_Price__c = cart.Total_Price__c;
+        order.Order_Date__c = Datetime.now();
+        order.User__c = userId;
+
+        if (doInsert) {
+            insert order;
+        }
+
+        return order;
     }
 }
