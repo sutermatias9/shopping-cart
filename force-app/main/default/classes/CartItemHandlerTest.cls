@@ -85,4 +85,21 @@ public with sharing class CartItemHandlerTest {
             Assert.areNotEqual(productId, item.Product__c);
         }
     }
+
+    @isTest
+    static void testUpdateQuantity() {
+        Id userId = [SELECT Id FROM User WHERE LastName = 'Active Cart 3 item'].Id;
+        Id itemToUpdateId = [SELECT Id FROM Cart_Item__c WHERE Cart__r.Status__c = 'Active' AND Cart__r.User__c = :userId LIMIT 1].Id;
+        Integer newQuantity = 200;
+
+        Test.startTest();
+        CartItemHandler.updateQuantity(itemToUpdateId, newQuantity);
+        Test.stopTest();
+
+        for (Cart_Item__c item : [SELECT Quantity__c FROM Cart_Item__c WHERE Cart__r.Status__c = 'Active' AND Cart__r.User__c = :userId]) {
+            if (item.Id == itemToUpdateId) {
+                Assert.areEqual(newQuantity, item.Quantity__c, 'Expected quantity: ' + newQuantity + ', but was: ' + item.Quantity__c);
+            }
+        }
+    }
 }
