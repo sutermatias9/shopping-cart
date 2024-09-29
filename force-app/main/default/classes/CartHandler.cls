@@ -1,5 +1,25 @@
 public with sharing class CartHandler {
     @AuraEnabled
+    public static Map<String, List<Cart__c>> getAllCarts() {
+        Map<String, List<Cart__c>> cartsByUser = new Map<String, List<Cart__c>>();
+
+        // Group carts by user
+        for(Cart__c cart : [SELECT Status__c, Total_Price__c, User__r.Name, Date_Purchased__c,
+        (SELECT Quantity__c, Unit_Price__c, Name, Product__r.Image__c FROM Cart_Items__r)
+         FROM Cart__c ORDER BY Date_Purchased__c]) {
+            String user = cart.User__r.Name;
+
+            if(!cartsByUser.containsKey(user)) {
+                cartsByUser.put(user, new List<Cart__c>());
+            } 
+
+            cartsByUser.get(user).add(cart);
+        }
+
+        return cartsByUser;
+    }
+    
+    @AuraEnabled
     public static Cart__c getActiveCartInfo(Id userId) {
         List<Cart__c> cart = [
             SELECT Id, Total_Price__c, (SELECT Quantity__c, Unit_Price__c, Name, Product__c, Product__r.Image__c FROM Cart_Items__r)
@@ -34,6 +54,8 @@ public with sharing class CartHandler {
 
         return cart[0];
     }
+
+    
 
     public static Cart__c createCart(Id userId) {
         Cart__c record = new Cart__c(User__c = userId, Status__c = 'Active');
