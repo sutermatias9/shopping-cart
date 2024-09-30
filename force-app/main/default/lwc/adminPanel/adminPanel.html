@@ -1,3 +1,21 @@
 <template>
-    
+    <lightning-card title="Administrator Panel">
+        <div class="slds-align_absolute-center">
+            <lightning-input type="search" label="Search user" onchange={handleInputChange}></lightning-input>
+        </div>
+        <div class="slds-var-p-around_medium">
+            <hr>
+            <template lwc:if={userCarts}>
+                <div class="slds-grid slds-wrap slds-grid_align-space">
+                    <template for:each={userCarts} for:item="userCart">
+                        <!-- Tile -->
+                        <div key={userCart.userName} class="slds-col slds-size_1-of-5">
+                            <c-user-tile user-name={userCart.userName} total-spent={userCart.totalSpent}
+                                current-cart={userCart.currentCart}></c-user-tile>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
 </template>

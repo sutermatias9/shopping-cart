@@ -1,0 +1,28 @@
+.tile:hover {
+    cursor: pointer;
+}
+
+.tile:hover .username {
+    text-decoration: underline;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.numbers {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.quantity {
+    color: rgb(4, 108, 182);
+}
+.price {
+    color: rgb(0, 80, 0);
+}
+
+.text-centered {
+    text-align: center;
+}

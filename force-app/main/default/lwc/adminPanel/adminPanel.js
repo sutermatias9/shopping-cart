@@ -6,7 +6,6 @@ export default class AdminPanel extends LightningElement {
 
     connectedCallback() {
         this.loadCarts();
-        console.log(JSON.stringify(this.userCarts));
     }
 
     async loadCarts() {
