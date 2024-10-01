@@ -134,8 +134,11 @@ export default class Shopping extends LightningElement {
     }
 
     handleCartUpdate() {
-        console.log('cartupdate');
         this.refreshCart();
+    }
+
+    handleCartPurchase() {
+        this.cartInfo = null;
     }
 
     handleCartCancel() {

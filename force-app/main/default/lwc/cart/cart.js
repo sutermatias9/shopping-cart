@@ -5,7 +5,7 @@ import setCartAsPurchased from '@salesforce/apex/CartHandler.setAsPurchased';
 
 export default class Cart extends LightningElement {
     @api cart;
-    isCreating = false;
+    isPurchasing = false;
 
     get cartItems() {
         if (this.cart) {
@@ -24,17 +24,18 @@ export default class Cart extends LightningElement {
     }
 
     handleCancelClick() {
-        this.fireCancelEvent();
+        this.fireEvent('cancel');
     }
 
-    async handleCreateClick() {
-        this.isCreating = true;
+    async handlePurchaseClick() {
+        this.isPurchasing = true;
         await createOrder({ userId });
         await setCartAsPurchased({ userId });
-        this.isCreating = false;
+        this.isPurchasing = false;
+        this.fireEvent('purchase');
     }
 
-    fireCancelEvent() {
-        this.dispatchEvent(new CustomEvent('cancel'));
+    fireEvent(eventName) {
+        this.dispatchEvent(new CustomEvent(eventName));
     }
 }
