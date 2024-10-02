@@ -7,19 +7,31 @@
 
         <!-- Modal Body -->
         <div slot="content">
-            <template for:each={cartItems} for:item="item">
-                <div class="slds-box slds-var-m-bottom_medium" key={item.Id}>
-                    <c-cart-tile item={item}></c-cart-tile>
+
+            <!-- Cart products-->
+            <template lwc:if={cartItems}>
+                <template for:each={cartItems} for:item="item">
+                    <div class="slds-box slds-var-m-bottom_medium" key={item.Id}>
+                        <c-cart-tile item={item}></c-cart-tile>
+                    </div>
+                </template>
+
+                <!-- Final Price of all added Products -->
+                <div class="slds-var-m-top_medium final-price">Grand Total: <span class="price">${grandTotal}</span>
                 </div>
             </template>
 
-            <!-- Final Price of all added Products -->
-            <div class="slds-var-m-top_medium final-price">Grand Total: <span class="price">${grandTotal}</span></div>
+            <!-- Illustration if cart is empty -->
+            <template lwc:else>
+                <c-illustration class="slds-var-p-around_small">
+                    <span slot="header">Your cart is currently empty!</span>
+                    <span slot="body">Add products to proceed with your purchase.</span>
+                </c-illustration>
+            </template>
         </div>
 
         <!-- Modal Footer -->
         <div slot="footer">
-            <!-- Cancel Button -->
             <lightning-button label="Cancel" variant="brand-outline" onclick={handleCancelClick}></lightning-button>
 
             <lightning-button label="Purchase" variant="brand" class="slds-var-m-left_medium"

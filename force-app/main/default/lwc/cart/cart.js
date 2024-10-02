@@ -12,7 +12,7 @@ export default class Cart extends LightningElement {
             return this.cart.Cart_Items__r;
         }
 
-        return [];
+        return null;
     }
 
     get grandTotal() {
