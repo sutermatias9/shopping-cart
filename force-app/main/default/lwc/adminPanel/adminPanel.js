@@ -24,7 +24,7 @@ export default class AdminPanel extends LightningElement {
         const activeCart = carts.find((cart) => cart.Status__c === 'Active');
         const info = { numberOfItems: 0, totalAmount: 0 };
 
-        if (activeCart) {
+        if (activeCart && activeCart.Cart_Items__r) {
             info.numberOfItems = activeCart.Cart_Items__r.reduce((total, item) => total + item.Quantity__c, 0);
 
             info.totalAmount = this.calculateCartTotal(activeCart.Cart_Items__r).toFixed(2);
