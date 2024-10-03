@@ -14,33 +14,38 @@ export default class AdminPanel extends LightningElement {
         this.userCarts = Object.keys(cartsByUser).map((userName) => {
             return {
                 userName,
-                currentCart: this.getCurrentCartInfo(cartsByUser[userName].find((cart) => cart.Status__c === 'Active')),
-                totalSpent: this.getPurchasedCartsTotalAmount(cartsByUser[userName].filter((cart) => cart.Status__c === 'Purchased'))
+                activeCart: this.getActiveCartInfo(cartsByUser[userName]),
+                totalSpent: this.getPurchasedCartsTotalAmount(cartsByUser[userName])
             };
         });
     }
 
-    getCurrentCartInfo(cart) {
+    getActiveCartInfo(carts) {
+        const activeCart = carts.find((cart) => cart.Status__c === 'Active');
         const info = { numberOfItems: 0, totalAmount: 0 };
 
-        if (cart) {
-            info.numberOfItems = cart.Cart_Items__r.length;
-            info.totalAmount = this.getCartTotal(cart);
+        if (activeCart) {
+            info.numberOfItems = activeCart.Cart_Items__r.reduce((total, item) => total + item.Quantity__c, 0);
+
+            info.totalAmount = this.calculateCartTotal(activeCart.Cart_Items__r).toFixed(2);
         }
 
         return info;
     }
 
-    getPurchasedCartsTotalAmount(purchasedCarts) {
-        return purchasedCarts.reduce((accumulator, cart) => {
-            return accumulator + parseFloat(this.getCartTotal(cart));
-        }, 0);
+    getPurchasedCartsTotalAmount(carts) {
+        const purchasedCarts = carts.filter((cart) => cart.Status__c === 'Purchased');
+
+        return purchasedCarts
+            .reduce((accumulator, cart) => {
+                return accumulator + this.calculateCartTotal(cart.Cart_Items__r);
+            }, 0)
+            .toFixed(2);
     }
 
-    getCartTotal(cart) {
-        const sum = cart.Cart_Items__r.reduce((accumulator, item) => {
-            return accumulator + item.Unit_Price__c;
+    calculateCartTotal(items) {
+        return items.reduce((accumulator, item) => {
+            return accumulator + item.Quantity__c * item.Unit_Price__c;
         }, 0);
-        return sum.toFixed(2);
     }
 }
