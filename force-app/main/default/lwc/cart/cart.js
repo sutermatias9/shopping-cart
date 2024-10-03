@@ -8,7 +8,7 @@ export default class Cart extends LightningElement {
     isPurchasing = false;
 
     get cartItems() {
-        if (this.cart) {
+        if (this.cart && this.cart.Cart_Items__r.length > 0) {
             return this.cart.Cart_Items__r;
         }
 
