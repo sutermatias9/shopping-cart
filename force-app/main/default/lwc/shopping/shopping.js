@@ -179,6 +179,8 @@ export default class Shopping extends LightningElement {
         try {
             const result = await getActiveCartInfo({ userId });
             this.cartInfo = result;
+
+            this.cartInfo.Cart_Items__r = this.cartInfo.Cart_Items__r ?? [];
         } catch (e) {
             console.log(e);
         }
