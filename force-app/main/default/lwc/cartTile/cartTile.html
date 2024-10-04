@@ -1,15 +1,15 @@
 <template>
     <div class="slds-grid slds-gutters slds-grid_vertical-align-center container">
-        <div class="slds-col slds-size_1-of-5 slds-align_absolute-center image-container"><img class="product-image"
+        <div class="slds-col slds-size_1-of-5 slds-align_absolute-center image-container "><img class="product-image"
                 src={item.Product__r.Image__c}>
         </div>
         <div class="slds-col slds-size_3-of-5">
             <div class="slds-grid slds-grid_vertical">
-                <div class="slds-col">
+                <div class="slds-col slds-text-heading_small slds-truncate">
                     {item.Name}
                 </div>
-                <div class="slds-col">
-                    <div class="slds-grid slds-grid_vertical-align-end slds-grid_align-spread">
+                <div class="slds-col slds-var-m-top_medium">
+                    <div class="slds-grid slds-grid_align-spread">
                         <div class="slds-col">
                             <lightning-button variant="destructive" label="Remove"
                                 onclick={handleRemoveClick}></lightning-button>
