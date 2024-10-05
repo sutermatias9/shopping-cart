@@ -11,11 +11,23 @@
                         <!-- Tile -->
                         <div key={userCart.userName} class="slds-col slds-size_1-of-5">
                             <c-user-tile user-name={userCart.userName} total-spent={userCart.totalSpent}
-                                current-cart={userCart.activeCart}></c-user-tile>
+                                current-cart={userCart.activeCart} onclick={handleTileClick}></c-user-tile>
                         </div>
                     </template>
                 </div>
             </template>
         </div>
     </lightning-card>
+
+    <template lwc:if={isUserCartsModalOpen}>
+        <c-modal onmodalclose={handleModalClose}>
+            <span slot="title">User Carts</span>
+            <div slot="content">
+                <lightning-tree items={userCartsTree}></lightning-tree>
+            </div>
+            <div slot="footer">
+                <lightning-button variant="brand" label="Close" onclick={handleCloseClick}></lightning-button>
+            </div>
+        </c-modal>
+    </template>
 </template>

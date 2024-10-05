@@ -3,9 +3,27 @@ import getAllCarts from '@salesforce/apex/CartHandler.getAllCarts';
 
 export default class AdminPanel extends LightningElement {
     userCarts;
+    userCartsTree;
+    isUserCartsModalOpen = false;
 
     connectedCallback() {
         this.loadCarts();
+    }
+
+    handleTileClick(event) {
+        this.isUserCartsModalOpen = true;
+        const user = event.currentTarget.userName;
+        const carts = this.userCarts.find((userCart) => userCart.userName === user).carts;
+
+        this.createTreeItems(carts);
+    }
+
+    handleModalClose() {
+        this.isUserCartsModalOpen = false;
+    }
+
+    handleCloseClick() {
+        this.isUserCartsModalOpen = false;
     }
 
     async loadCarts() {
@@ -15,9 +33,13 @@ export default class AdminPanel extends LightningElement {
             return {
                 userName,
                 activeCart: this.getActiveCartInfo(cartsByUser[userName]),
-                totalSpent: this.getPurchasedCartsTotalAmount(cartsByUser[userName])
+                totalSpent: this.getPurchasedCartsTotalAmount(cartsByUser[userName]),
+                carts: cartsByUser[userName]
             };
         });
+
+        console.log(cartsByUser);
+        console.log(JSON.stringify(this.userCarts));
     }
 
     getActiveCartInfo(carts) {
@@ -47,5 +69,24 @@ export default class AdminPanel extends LightningElement {
         return items.reduce((accumulator, item) => {
             return accumulator + item.Quantity__c * item.Unit_Price__c;
         }, 0);
+    }
+
+    createTreeItems(carts) {
+        this.userCartsTree = carts.map((cart, index) => {
+            const label =
+                cart.Status__c === 'Active'
+                    ? `Current Cart | Total: $${cart.Total_Price__c}`
+                    : `Cart ${index} | Total: $${cart.Total_Price__c} | Purchase date: ${cart.Date_Purchased__c}`;
+
+            const items = cart.Cart_Items__r.map((item) => {
+                return {
+                    label: `${item.Quantity__c}x ${item.Name}`,
+                    name: item.Name,
+                    metatext: `$${item.Quantity__c * item.Unit_Price__c}`
+                };
+            });
+
+            return { label, items };
+        });
     }
 }
