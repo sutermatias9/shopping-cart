@@ -2,18 +2,33 @@ import { LightningElement } from 'lwc';
 import getAllCarts from '@salesforce/apex/CartHandler.getAllCarts';
 
 export default class AdminPanel extends LightningElement {
-    userCarts;
-    userCartsTree;
+    filteredUserCarts;
+    allUserCarts;
+
     isUserCartsModalOpen = false;
+    userCartsTree;
+
+    searchTimeout;
 
     connectedCallback() {
         this.loadCarts();
     }
 
+    handleSearchChange(event) {
+        const userInput = event.currentTarget.value.toLowerCase();
+
+        clearTimeout(this.searchTimeout);
+
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.searchTimeout = setTimeout(() => {
+            this.filteredUserCarts = this.allUserCarts.filter((userCart) => userCart.userName.toLowerCase().includes(userInput));
+        }, 300);
+    }
+
     handleTileClick(event) {
         this.isUserCartsModalOpen = true;
         const user = event.currentTarget.userName;
-        const carts = this.userCarts.find((userCart) => userCart.userName === user).carts;
+        const carts = this.filteredUserCarts.find((userCart) => userCart.userName === user).carts;
 
         this.createTreeItems(carts);
     }
@@ -29,7 +44,7 @@ export default class AdminPanel extends LightningElement {
     async loadCarts() {
         const cartsByUser = await getAllCarts();
 
-        this.userCarts = Object.keys(cartsByUser).map((userName) => {
+        this.allUserCarts = Object.keys(cartsByUser).map((userName) => {
             return {
                 userName,
                 activeCart: this.getActiveCartInfo(cartsByUser[userName]),
@@ -38,8 +53,7 @@ export default class AdminPanel extends LightningElement {
             };
         });
 
-        console.log(cartsByUser);
-        console.log(JSON.stringify(this.userCarts));
+        this.filteredUserCarts = this.allUserCarts;
     }
 
     getActiveCartInfo(carts) {
