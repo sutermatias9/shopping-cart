@@ -3,7 +3,7 @@
         <div class="slds-align_absolute-center">
             <lightning-input type="search" label="Search user" onchange={handleSearchChange}></lightning-input>
         </div>
-        <div class="slds-var-p-around_medium">
+        <div class="slds-var-p-around_medium tiles-container">
             <hr>
             <template lwc:if={filteredUserCarts}>
                 <div class="slds-grid slds-wrap slds-grid_align-space">
@@ -22,7 +22,7 @@
     <template lwc:if={isUserCartsModalOpen}>
         <c-modal onmodalclose={handleModalClose}>
             <span slot="title">User Carts</span>
-            <div slot="content">
+            <div slot="content" class="modal-body">
                 <lightning-tree items={userCartsTree}></lightning-tree>
             </div>
             <div slot="footer">
