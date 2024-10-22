@@ -3,13 +3,13 @@
         <div class="slds-align_absolute-center">
             <lightning-input type="search" label="Search user" onchange={handleSearchChange}></lightning-input>
         </div>
-        <div class="slds-var-p-around_medium tiles-container">
+        <div class="slds-var-p-around_large tiles-container">
             <hr>
             <template lwc:if={filteredUserCarts}>
-                <div class="slds-grid slds-wrap slds-grid_align-space">
+                <div class="slds-grid slds-wrap slds-grid_align-space slds-gutters">
                     <template for:each={filteredUserCarts} for:item="userCart">
                         <!-- Tile -->
-                        <div key={userCart.userName} class="slds-col slds-size_1-of-5">
+                        <div key={userCart.userName} class="slds-col slds-size_3-of-12 slds-var-m-bottom_large">
                             <c-user-tile user-name={userCart.userName} total-spent={userCart.totalSpent}
                                 current-cart={userCart.activeCart} onclick={handleTileClick}></c-user-tile>
                         </div>
