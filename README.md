@@ -9,13 +9,15 @@
   - **Lightning Web Components (LWC)**: HTML, CSS, Javascript
   - **Lightning Design System** (SLDS)
 
-## Data Model Diagram
+## Overview
 
-![Shopping cart data model](https://i.gyazo.com/59478d9896da89ada71bb18a50e9280b.png)
-
-## Description
+### Description
 
 This project simulates a basic e-commerce site within Salesforce. Users can browse products, apply filters and add items to their carts. System Administrators have access to a separate page to view carts from other users.
+
+### Data Model Diagram
+
+![Shopping cart data model](https://i.gyazo.com/59478d9896da89ada71bb18a50e9280b.png)
 
 ### Features
 
