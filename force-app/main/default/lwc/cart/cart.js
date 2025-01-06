@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
 import userId from '@salesforce/user/Id';
-import createOrder from '@salesforce/apex/OrderHandler.createOrder';
 import setCartAsPurchased from '@salesforce/apex/CartHandler.setAsPurchased';
 
 export default class Cart extends LightningElement {
@@ -29,7 +28,6 @@ export default class Cart extends LightningElement {
 
     async handlePurchaseClick() {
         this.isPurchasing = true;
-        await createOrder({ userId });
         await setCartAsPurchased({ userId });
         this.isPurchasing = false;
         this.fireEvent('purchase');
