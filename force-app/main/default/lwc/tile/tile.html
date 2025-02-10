@@ -1,32 +1,33 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <div class="slds-box tile">
-        <div class="slds-grid slds-grid_vertical">
-            <template lwc:if={isInCart}>
-                <div class="slds-is-absolute">
-                    <lightning-badge label="Added"></lightning-badge>
-                </div>
-            </template>
+    <div class="slds-is-relative">
+        <template lwc:if={isInCart}>
+            <div class="badge">
+                <lightning-badge label="Added"></lightning-badge>
+            </div>
+        </template>
 
+        <div class="slds-box container">
             <!-- Product Image -->
-            <div class="slds-col slds-align_absolute-center image-container"><img class="product-image"
-                    src={product.Image__c} alt={product.Name}></div>
+            <img class="product-image" src={product.Image__c} alt={product.Name}>
 
-            <!-- Product Name -->
-            <div class="slds-col slds-var-m-vertical_small slds-text-title_caps name">{product.Name}</div>
+            <div class="footer">
+                <!-- Product Name -->
+                <div class="slds-col slds-text-title_caps name">{product.Name}</div>
 
-            <!-- Product Price and Rating -->
-            <div class="slds-col">
-                <div class="slds-grid slds-gutters">
-                    <!-- Price -->
-                    <div class="slds-col slds-size_1-of-2"><b>Price: <span class="price">${productPrice}</span></b>
-                    </div>
+                <!-- Product Price and Rating -->
+                <div class="slds-col ">
+                    <div class="slds-grid slds-gutters">
+                        <!-- Price -->
+                        <div class="slds-col slds-size_1-of-2"><b><span class="price">${productPrice}</span></b>
+                        </div>
 
-                    <!-- Rating -->
-                    <div class="slds-col slds-size_1-of-2">
-                        <div class="slds-float_right">
-                            <img src="https://i.ibb.co/wCwSS9t/one-star.png" class="star"> &nbsp;
-                            {product.Rating__c}
+                        <!-- Rating -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-float_right">
+                                <img src="https://i.ibb.co/wCwSS9t/one-star.png" class="star"> &nbsp;
+                                {product.Rating__c}
+                            </div>
                         </div>
                     </div>
                 </div>
