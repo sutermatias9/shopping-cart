@@ -12,7 +12,7 @@
             <div class="slds-grid slds-wrap slds-grid_align-center">
                 <template for:each={products} for:item="product">
                     <div key={product.Id}
-                        class="slds-col slds-size_1-of-3 slds-var-m-bottom_medium slds-align_absolute-center">
+                        class="slds-col slds-size_1-of-3 slds-var-m-bottom_large slds-align_absolute-center">
                         <c-tile product={product} cart-products={cartProducts} onclick={handleTileClick}></c-tile>
                     </div>
                 </template>
