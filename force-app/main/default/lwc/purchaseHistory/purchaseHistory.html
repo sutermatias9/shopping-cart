@@ -1,0 +1,36 @@
+<template>
+    <div class="slds-var-p-around_medium table-container">
+        <table>
+            <thead>
+                <tr>
+                    <td>Purchase Date</td>
+                    <td>Items</td>
+                    <td>Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                <template lwc:if={userCarts}>
+                    <template for:each={userCarts} for:item="cart">
+                        <tr key={cart.Id} class="cart-info" data-id={cart.Id} onclick={handleRowClick}>
+                            <td>{cart.Date_Purchased__c}</td>
+                            <td>{cart.numberOfItems} items</td>
+                            <td class="price">${cart.Total_Price__c}</td>
+                        </tr>
+                        <tr key={cart.Id} class="hide">
+                            <td colspan="3">
+                                <template lwc:if={selectedCartProducts}>
+                                    <template for:each={selectedCartProducts} for:item="product">
+                                        <div key={cart.Product__c}>
+                                            <c-purchase-product-list
+                                                products={selectedCartProducts}></c-purchase-product-list>
+                                        </div>
+                                    </template>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

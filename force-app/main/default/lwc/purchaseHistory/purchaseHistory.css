@@ -1,0 +1,53 @@
+.table-container {
+    padding: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 20px; /* Rounded corners */
+    overflow: hidden; /* Ensures corners are rounded */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+thead {
+    font-weight: bold;
+    background-color: var(--slds-g-color-brand-base-60);
+    color: white;
+}
+
+td {
+    padding: 10px;
+}
+
+tbody {
+    background-color: white;
+    color: black;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease-in-out, font-weight 0.2s ease-in-out;
+}
+
+tbody tr.cart-info:nth-of-type(4n + 1) {
+    background-color: var(--slds-g-color-neutral-base-90);
+}
+
+tbody tr.cart-info:hover {
+    background-color: var(--slds-g-color-brand-base-90);
+    cursor: pointer;
+}
+
+.price {
+    color: var(--slds-g-color-success-base-50);
+    font-weight: 700;
+}
+
+tbody tr.cart-info.selected {
+    font-weight: 900;
+    background-color: var(--slds-g-color-brand-base-80);
+}
+
+.hide {
+    display: none;
+}
