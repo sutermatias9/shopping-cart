@@ -1,0 +1,29 @@
+table {
+    width: 80%;
+}
+
+thead tr {
+    font-size: 1.1em;
+    font-weight: bold;
+    border-bottom: 2px solid #d1d1d1;
+}
+
+thead td.product {
+    width: 700px;
+}
+
+.product-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.product-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+td {
+    padding: 5px;
+}

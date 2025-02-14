@@ -1,0 +1,30 @@
+<template>
+    <table>
+        <thead>
+            <tr>
+                <th class="product">Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={products} for:item="product">
+                <tr key={product.Id} class="slds-p-around_medium">
+                    <td>
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <div class="slds-col slds-grow-none">
+                                <img src={product.Product__r.Image__c} alt="" class="product-img">
+                            </div>
+                            <div class="slds-var-m-left_medium product-name">
+                                {product.Name}</div>
+                        </div>
+                    </td>
+                    <td>${product.Unit_Price__c}</td>
+                    <td>x{product.Quantity__c}</td>
+                    <td>${product.total}</td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</template>
