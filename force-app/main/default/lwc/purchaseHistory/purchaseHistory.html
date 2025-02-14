@@ -16,16 +16,16 @@
                             <td>{cart.numberOfItems} items</td>
                             <td class="price">${cart.Total_Price__c}</td>
                         </tr>
-                        <tr key={cart.Id} class="hide">
+                        <tr key={cart.Id} class="hide product-list">
                             <td colspan="3">
-                                <template lwc:if={selectedCartProducts}>
-                                    <template for:each={selectedCartProducts} for:item="product">
-                                        <div key={cart.Product__c}>
+                                <div class="large-left-spacing">
+                                    <template lwc:if={selectedCartProducts}>
+                                        <div>
                                             <c-purchase-product-list
                                                 products={selectedCartProducts}></c-purchase-product-list>
                                         </div>
                                     </template>
-                                </template>
+                                </div>
                             </td>
                         </tr>
                     </template>

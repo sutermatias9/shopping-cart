@@ -48,6 +48,14 @@ tbody tr.cart-info.selected {
     background-color: var(--slds-g-color-brand-base-80);
 }
 
+.product-list {
+    border-bottom: 1px solid var(--slds-g-color-neutral-base-90);
+}
+
+.large-left-spacing {
+    margin-left: 5rem;
+}
+
 .hide {
     display: none;
 }
