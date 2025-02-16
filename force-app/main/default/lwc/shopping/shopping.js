@@ -20,6 +20,7 @@ export default class Shopping extends LightningElement {
     // Flags to control modals
     isProductDetailOpen = false;
     isCartOpen = false;
+    isMyPurchasesOpen = false;
 
     cartInfo = null;
     isCartUpdating = false;
@@ -40,7 +41,7 @@ export default class Shopping extends LightningElement {
     }
 
     /**
-     * @computed - Computes the list of products based on the applied filters.
+     * @getter - Computes the list of products based on the applied filters.
      * @returns {Array} - List of products to display.
      */
     get productsToShow() {
@@ -52,7 +53,7 @@ export default class Shopping extends LightningElement {
     }
 
     /**
-     * @computed - Calculates the highest price among available products, to use in filters.
+     * @getter - Calculates the highest price among available products, to use in filters.
      * @returns {Number} - The rounded highest unit price.
      */
     get highestPrice() {
@@ -93,18 +94,24 @@ export default class Shopping extends LightningElement {
     }
 
     handleModalClose(event) {
-        const modalType = event.currentTarget.classList.contains('cart') ? 'cart' : 'product';
+        const type = event.currentTarget.dataset.type;
 
-        this.closeModal(modalType);
+        if (type === 'cart') this.isCartOpen = false;
+        else if (type === 'product-detail') this.isProductDetailOpen = false;
+        else if (type === 'my-purchases') this.isMyPurchasesOpen = false;
     }
 
     handleProductSelect(event) {
         this.selectedProduct = event.detail;
-        this.showModal('product');
+        this.isProductDetailOpen = true;
+    }
+
+    handleViewPurchases() {
+        this.isMyPurchasesOpen = true;
     }
 
     handleViewCart() {
-        this.showModal('cart');
+        this.isCartOpen = true;
     }
 
     async handleAddToCart(event) {
@@ -142,7 +149,7 @@ export default class Shopping extends LightningElement {
     }
 
     handleCartCancel() {
-        this.closeModal('cart');
+        this.isCartOpen = false;
     }
 
     getPrice(product) {
@@ -183,22 +190,6 @@ export default class Shopping extends LightningElement {
             this.cartInfo.Cart_Items__r = this.cartInfo.Cart_Items__r ?? [];
         } catch (e) {
             console.log(e);
-        }
-    }
-
-    showModal(modal) {
-        if (modal === 'cart') {
-            this.isCartOpen = true;
-        } else {
-            this.isProductDetailOpen = true;
-        }
-    }
-
-    closeModal(modalType) {
-        if (modalType === 'cart') {
-            this.isCartOpen = false;
-        } else {
-            this.isProductDetailOpen = false;
         }
     }
 }

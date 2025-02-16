@@ -17,21 +17,29 @@
             </template>
             <template lwc:else>
                 <c-catalog products={productsToShow} cart-products={cartProducts} onproductselect={handleProductSelect}
-                    onviewcart={handleViewCart}></c-catalog>
+                    onviewcart={handleViewCart} onviewpurchases={handleViewPurchases}></c-catalog>
             </template>
         </div>
     </div>
 
     <!-- Product Detail Modal -->
     <template lwc:if={isProductDetailOpen}>
-        <c-product-detail product={selectedProduct} is-in-cart={isProductInCart} class="product-detail"
+        <c-product-detail product={selectedProduct} is-in-cart={isProductInCart} data-type="product-detail"
             onmodalclose={handleModalClose} onaddtocart={handleAddToCart} onremovefromcart={handleRemoveFromCart}
             disabled={isCartUpdating}></c-product-detail>
     </template>
 
     <!-- Cart Modal -->
     <template lwc:if={isCartOpen}>
-        <c-cart cart={cartInfo} class='cart' onupdate={handleCartUpdate} onremove={handleRemoveFromCart}
+        <c-cart cart={cartInfo} data-type='cart' onupdate={handleCartUpdate} onremove={handleRemoveFromCart}
             onmodalclose={handleModalClose} onpurchase={handleCartPurchase} oncancel={handleCartCancel}></c-cart>
+    </template>
+
+    <!-- Past Purchases Modal -->
+    <template lwc:if={isMyPurchasesOpen}>
+        <c-modal size="large" data-type="my-purchases" onmodalclose={handleModalClose}>
+            <span slot="title">Purchase History</span>
+            <c-purchase-history slot="content"></c-purchase-history>
+        </c-modal>
     </template>
 </template>

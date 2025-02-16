@@ -14,6 +14,10 @@ export default class Catalog extends LightningElement {
         this.fireEvent('viewcart');
     }
 
+    handleMyPurchasesClick() {
+        this.fireEvent('viewpurchases');
+    }
+
     fireEvent(eventName, detail) {
         const event = new CustomEvent(eventName, { detail });
 

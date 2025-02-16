@@ -3,6 +3,9 @@
     <lightning-card title="Catalog" icon-name="standard:catalog">
         <!-- Shopping Cart Icon -->
         <div slot="actions">
+            <lightning-button label="Purchase History" title="View purchase history" icon-name="utility:checkout"
+                variant="brand" icon-position="right" class="slds-m-right_medium history-btn"
+                onclick={handleMyPurchasesClick}></lightning-button>
             <lightning-button-icon icon-name="utility:cart" class="cart" onclick={handleCartIconClick}>
             </lightning-button-icon>
         </div>
