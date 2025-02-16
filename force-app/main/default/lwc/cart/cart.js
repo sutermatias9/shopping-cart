@@ -4,12 +4,14 @@ import setCartAsPurchased from '@salesforce/apex/CartHandler.setAsPurchased';
 
 export default class Cart extends LightningElement {
     @api cart;
-    isPurchasing = false;
+    isPurchaseDisabled = false;
 
     get cartItems() {
         if (this.cart && this.cart.Cart_Items__r.length > 0) {
             return this.cart.Cart_Items__r;
         }
+
+        this.isPurchaseDisabled = true;
 
         return null;
     }
@@ -27,9 +29,8 @@ export default class Cart extends LightningElement {
     }
 
     async handlePurchaseClick() {
-        this.isPurchasing = true;
+        this.isPurchaseDisabled = true;
         await setCartAsPurchased({ userId });
-        this.isPurchasing = false;
         this.fireEvent('purchase');
     }
 
