@@ -1,4 +1,5 @@
 import { LightningElement, wire } from 'lwc';
+import { refreshApex } from '@salesforce/apex';
 import userId from '@salesforce/user/Id';
 import getUserPurchasedCarts from '@salesforce/apex/CartHandler.getUserPurchasedCarts';
 
@@ -6,23 +7,29 @@ export default class PurchaseHistory extends LightningElement {
     userCarts = null;
     selectedCartProducts = null;
 
-    @wire(getUserPurchasedCarts, { userId })
-    wiredGetUserPurchasedCarts({ data, error }) {
-        if (data) {
-            console.log(JSON.stringify(data));
+    userPurchasedCartsResult = null; // used to refresh
 
+    @wire(getUserPurchasedCarts, { userId })
+    wiredGetUserPurchasedCarts(result) {
+        this.userPurchasedCartsResult = result;
+
+        if (result.data) {
             // Add number of items and format purchase date
-            this.userCarts = data.map((cart) => {
+            this.userCarts = result.data.map((cart) => {
                 const Date_Purchased__c = this.formatDate(cart.Date_Purchased__c);
                 const numberOfItems = cart.Cart_Items__r.reduce((accumulator, item) => accumulator + item.Quantity__c, 0);
 
                 return { ...cart, numberOfItems, Date_Purchased__c };
             });
         }
-        if (error) {
-            console.log('ERROR ' + JSON.stringify(error));
-            console.error(error);
+        if (result.error) {
+            console.log('ERROR ' + JSON.stringify(result.error));
+            console.error(result.error);
         }
+    }
+
+    connectedCallback() {
+        refreshApex(this.userPurchasedCartsResult);
     }
 
     handleRowClick(event) {
